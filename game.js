@@ -120,32 +120,151 @@ class Actor {
     }
 }
 
-// // Проверка
-// const items = new Map();
+// Проверка
+const items = new Map();
+const player = new Actor();
+console.log(player)
+items.set('Игрок', player);
+items.set('Первая монета', new Actor(new Vector(10, 10)));
+items.set('Вторая монета', new Actor(new Vector(15, 5)));
+
+function position(item) {
+    return ['left', 'top', 'right', 'bottom']
+        .map(side => `${side}: ${item[side]}`)
+        .join(', ');
+}
+
+function movePlayer(x, y) {
+    player.pos = player.pos.plus(new Vector(x, y));
+}
+
+function status(item, title) {
+    console.log(`${title}: ${position(item)}`);
+    if (player.isIntersect(item)) {
+        console.log(`Игрок подобрал ${title}`);
+    }
+}
+
+items.forEach(status);
+movePlayer(10, 10);
+items.forEach(status);
+movePlayer(5, -5);
+items.forEach(status);
+
+// Создаем сласс Level
+class Level {
+    constructor(field = [[]], actors = [{}]) {
+        this.grid = field;
+        this.actors = actors;
+        this.player = actors.type; // todo движущийся объект, тип которого — свойство type — равно player. Игорок передаётся с остальными движущимися объектами.
+        this.height = field.length;
+        this.width = field[0].length;
+        this.status = null;
+        this.finishDelay = 1;
+
+    }
+
+    // Создаем Метод isFinished()
+    isFinished() {
+        return (this.status !== null && this.finishDelay < 0);
+    }
+
+    // Создаем Метод actorAt()
+    actorAt(actor) { // todo непонял описнаие
+        try {
+            if (!(actor instanceof Actor)) {
+                throw 'В actorAt() передан объект другого типа'
+            }
+
+            // this.actors.map(function (el) {
+            //     if (actor.pos.x === el.pos.x || actor.pos.y === el.pos.y) {
+            //         return el;
+            //     } else {
+            //         return undefined;
+            //     }
+            // })
+            return actor;// временно
+
+
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    // Создаем Метод obstacleAt()
+    obstacleAt(pos, size) { // todo непонял описнаие
+        try {
+            if (!(pos instanceof Actor) || !(size instanceof Actor)) {
+                throw 'В obstacleAt() передан объект другого типа'
+            }
+            return actor;// временно
+
+
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    // Создаем Метод removeActor()
+    removeActor(actor) {
+        this.actors.forEach(function (el) {
+            if (el === actor) {
+                let index = this.actors.indexOf(el);
+                this.actors.splice(index, 1);
+            }
+        })
+    }
+
+    // Создаем Метод noMoreActors()
+    noMoreActors(type) {
+        return this.actors.forEach(function (actor) {
+            return (actor.type !== type);
+        })
+    }
+
+    // Создаем Метод playerTouched()
+    playerTouched() {
+
+    }
+
+}
+
+
+//Пример кода
+// const grid = [
+//
+//     [undefined, undefined],
+//     ['wall', 'wall']
+// ];
+//
+// function MyCoin(title) {
+//     this.type = 'coin';
+//     this.title = title;
+// }
+// MyCoin.prototype = Object.create(Actor);
+// MyCoin.constructor = MyCoin;
+//
+// const goldCoin = new MyCoin('Золото');
+// const bronzeCoin = new MyCoin('Бронза');
 // const player = new Actor();
-// items.set('Игрок', player);
-// items.set('Первая монета', new Actor(new Vector(10, 10)));
-// items.set('Вторая монета', new Actor(new Vector(15, 5)));
+// const fireball = new Actor();
 //
-// function position(item) {
-//     return ['left', 'top', 'right', 'bottom']
-//         .map(side => `${side}: ${item[side]}`)
-//         .join(', ');
+// const level = new Level(grid, [ goldCoin, bronzeCoin, player, fireball ]);
+//
+// level.playerTouched('coin', goldCoin);
+// level.playerTouched('coin', bronzeCoin);
+//
+// if (level.noMoreActors('coin')) {
+//     console.log('Все монеты собраны');
+//     console.log(`Статус игры: ${level.status}`);
 // }
 //
-// function movePlayer(x, y) {
-//     player.pos = player.pos.plus(new Vector(x, y));
+// const obstacle = level.obstacleAt(new Vector(1, 1), player.size);
+// if (obstacle) {
+//     console.log(`На пути препятствие: ${obstacle}`);
 // }
 //
-// function status(item, title) {
-//     console.log(`${title}: ${position(item)}`);
-//     if (player.isIntersect(item)) {
-//         console.log(`Игрок подобрал ${title}`);
-//     }
+// const otherActor = level.actorAt(player);
+// if (otherActor === fireball) {
+//     console.log('Пользователь столкнулся с шаровой молнией');
 // }
-//
-// items.forEach(status);
-// movePlayer(10, 10);
-// items.forEach(status);
-// movePlayer(5, -5);
-// items.forEach(status);
