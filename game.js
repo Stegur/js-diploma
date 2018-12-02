@@ -25,7 +25,6 @@ class Vector {
 }
 
 
-
 // //Проверка
 // const start = new Vector(30, 50);
 // const moveTo = new Vector(5, 10);
@@ -35,23 +34,14 @@ class Vector {
 // console.log(`Текущее расположение: ${finish.x}:${finish.y}`);
 
 
-
 // Создаем сласс Vector
 class Actor {
     constructor(position = new Vector(), size = new Vector(1, 1), speed = new Vector()) {
 
 
         // исключение если position не является Vector
-        if (!(position instanceof Vector)) {
+        if (!(position instanceof Vector && size instanceof Vector && speed instanceof Vector)) {
             throw new Error('В конструктор Actor передан аргумент position неявляющийся Vector');
-
-            // исключение если size не является Vector
-        } else if (!(size instanceof Vector)) {
-            throw new Error('В конструктор Actor передан аргумент size неявляющийся Vector');
-
-            // исключение если speed не является Vector
-        } else if (!(speed instanceof Vector)) {
-            throw new Error('В конструктор Actor передан аргумент speed неявляющийся Vector');
         }
 
         // определвем свойство pos, в котором размещен Vector
@@ -113,7 +103,6 @@ class Actor {
 }
 
 
-
 // // Проверка
 //
 // const items = new Map();
@@ -144,7 +133,6 @@ class Actor {
 // items.forEach(status);
 // movePlayer(5, -5);
 // items.forEach(status);
-
 
 
 // Создаем сласс Level
