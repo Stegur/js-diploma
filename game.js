@@ -96,43 +96,55 @@ class Actor {
             return false;
         }
 
-        return (this.pos === actor.pos);
+
+        return (this.pos.x === actor.pos.x || this.pos.y === actor.pos.y);
+        //return ((this.pos.x !== this.pos.x || this.pos.y !== this.pos.y) || (this.pos.x <= actor.pos.x || this.pos.y >= actor.pos.y ));
+
+      /*  if (actor.pos === this.pos || actor.pos.x <= this.pos.x || actor.pos.y >= this.pos.y || (actor.pos.x === this.pos.x || actor.pos.y === this.pos.y && actor.size.x < 0 || actor.size.y < 0)) {
+            return true;
+        } else {
+            return false; // позже сделаю сокращенную версию
+        }*/
+
+
+        //
+        // return (this.pos === actor.pos);
 
     }
 
 }
 
 
-// // Проверка
-//
-// const items = new Map();
-// const player = new Actor();
-// items.set('Игрок', player);
-// items.set('Первая монета', new Actor(new Vector(10, 10)));
-// items.set('Вторая монета', new Actor(new Vector(15, 5)));
-//
-// function position(item) {
-//     return ['left', 'top', 'right', 'bottom']
-//         .map(side => `${side}: ${item[side]}`)
-//         .join(', ');
-// }
-//
-// function movePlayer(x, y) {
-//     player.pos = player.pos.plus(new Vector(x, y));
-// }
-//
-// function status(item, title) {
-//     console.log(`${title}: ${position(item)}`);
-//     if (player.isIntersect(item)) {
-//         console.log(`Игрок подобрал ${title}`);
-//     }
-// }
-//
-// items.forEach(status);
-// movePlayer(10, 10);
-// items.forEach(status);
-// movePlayer(5, -5);
-// items.forEach(status);
+// Проверка
+
+const items = new Map();
+const player = new Actor();
+items.set('Игрок', player);
+items.set('Первая монета', new Actor(new Vector(10, 10)));
+items.set('Вторая монета', new Actor(new Vector(15, 5)));
+
+function position(item) {
+    return ['left', 'top', 'right', 'bottom']
+        .map(side => `${side}: ${item[side]}`)
+        .join(', ');
+}
+
+function movePlayer(x, y) {
+    player.pos = player.pos.plus(new Vector(x, y));
+}
+
+function status(item, title) {
+    console.log(`${title}: ${position(item)}`);
+    if (player.isIntersect(item)) {
+        console.log(`Игрок подобрал ${title}`);
+    }
+}
+
+items.forEach(status);
+movePlayer(10, 10);
+items.forEach(status);
+movePlayer(5, -5);
+items.forEach(status);
 
 
 // Создаем сласс Level
