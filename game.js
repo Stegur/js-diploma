@@ -34,7 +34,7 @@ class Vector {
 // console.log(`Текущее расположение: ${finish.x}:${finish.y}`);
 
 
-// Создаем сласс Vector
+// Создаем класс Vector
 class Actor {
     constructor(position = new Vector(), size = new Vector(1, 1), speed = new Vector()) {
 
@@ -59,22 +59,30 @@ class Actor {
 
         // Определяем свойство только для чтения left, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
         Object.defineProperty(this, 'left', {
-            value: this.pos.x,
+            get: function () {
+                return this.pos.x;
+            }
         });
 
         // Определяем свойство только для чтения top, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
         Object.defineProperty(this, 'top', {
-            value: this.pos.y,
+            get: function () {
+                return this.pos.y;
+            }
         });
 
         // Определяем свойство только для чтения right, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
         Object.defineProperty(this, 'right', {
-            value: this.pos.x + this.size.x,
+            get: function () {
+                return this.pos.x + this.size.x;
+            }
         });
 
         // Определяем свойство только для чтения bottom, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
         Object.defineProperty(this, 'bottom', {
-            value: this.pos.y + this.size.y,
+            get: function () {
+                return this.pos.y + this.size.y;
+            }
         });
 
         // Определяем свойство type со значением actor, только для чтения
@@ -97,18 +105,8 @@ class Actor {
         }
 
 
-        return (this.pos.x === actor.pos.x || this.pos.y === actor.pos.y);
-        //return ((this.pos.x !== this.pos.x || this.pos.y !== this.pos.y) || (this.pos.x <= actor.pos.x || this.pos.y >= actor.pos.y ));
-
-      /*  if (actor.pos === this.pos || actor.pos.x <= this.pos.x || actor.pos.y >= this.pos.y || (actor.pos.x === this.pos.x || actor.pos.y === this.pos.y && actor.size.x < 0 || actor.size.y < 0)) {
-            return true;
-        } else {
-            return false; // позже сделаю сокращенную версию
-        }*/
-
-
-        //
-        // return (this.pos === actor.pos);
+        return !((this.bottom <= actor.top) || (this.top >= actor.bottom) ||
+            (this.left >= actor.right) || (this.right <= actor.left));
 
     }
 
