@@ -178,22 +178,21 @@ class Level {
     // Создаем Метод actorAt()
     actorAt(actor) {
 
-        if (!(actor instanceof Actor)) {
-            throw new Error('В actorAt() передан объект другого типа');
-        } else {
-            return this.actors.find((el) => {
-                return el.isIntersect(actor);
-            })
-        }
+        /*  if (!(actor instanceof Actor)) {
+              throw new Error('В actorAt() передан объект другого типа');
+          } else {
+              return this.actors.find((el) => {
+                  return el.isIntersect(actor);
+              })
+          }*/
     }
 
     // Создаем Метод obstacleAt()
-    obstacleAt(pos, size) { // todo непонял описнаие
+    obstacleAt(pos, size) {
 
-        if (!(pos instanceof Actor) || !(size instanceof Actor)) {
-            //throw new Error('В obstacleAt() передан объект другого типа');
+        if (!(pos instanceof Vector) || !(size instanceof Vector)) {
+            throw new Error('В obstacleAt() передан объект другого типа');
         }
-        //return actor;// временно
 
 
     }
@@ -216,7 +215,15 @@ class Level {
     }
 
     // Создаем Метод playerTouched()
-    playerTouched() {
+    playerTouched(type, obj = {}) {
+        if (type === 'lava' || type === 'fireball') {
+            this.status = 'lost';
+        } else if (type === 'coin' && obj.title === 'coin') {
+            this.removeActor(obj);
+            if (this.noMoreActors(type)) {
+                return 'won';
+            }
+        }
 
     }
 
