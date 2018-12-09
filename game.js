@@ -87,7 +87,9 @@ class Actor {
 
         // Определяем свойство type со значением actor, только для чтения
         Object.defineProperty(this, 'type', {
-            value: 'actor',
+            get: function () {
+                return 'actor';
+            }
         });
 
     }
@@ -146,28 +148,38 @@ class Actor {
 
 // Создаем сласс Level
 class Level {
-    constructor(field = [[], []], actors = [new Actor()]) {
+    constructor(field = [], actors = []) {
         this.grid = field;
         this.actors = actors;
         this.player = actors.find((el) => {
             return el.type === 'player'
         });
-        this.height = field[0].length;
-        this.width = field[0].length; // При этом, если в разных строках разное число ячеек, то width будет равно максимальному количеству ячеек в строке. Reduce?
+
+        if (this.grid.length === 0) {
+            this.height = 0;
+            this.width = 0;
+        } else {
+            this.height = this.grid.length;
+            this.width = this.grid.reduce( function (max, el) {
+                const maxWidth = max.length;
+                const width = el.length;
+                return maxWidth > width ? maxWidth : width;
+            })
+        }
         this.status = null;
         this.finishDelay = 1;
     }
 
     // Создаем Метод isFinished()
     isFinished() {
-        return (this.status !== null && this.finishDelay < 0);
+        return this.status !== null && this.finishDelay < 0;
     }
 
     // Создаем Метод actorAt()
     actorAt(actor) { // todo непонял описнаие
 
         if (!(actor instanceof Actor)) {
-            throw new Error('В actorAt() передан объект другого типа');
+            //throw new Error('В actorAt() передан объект другого типа');
         }
 
         // this.actors.map(function (el) {
