@@ -160,7 +160,7 @@ class Level {
             this.width = 0;
         } else {
             this.height = this.grid.length;
-            this.width = this.grid.reduce( function (max, el) {
+            this.width = this.grid.reduce(function (max, el) {
                 const maxWidth = max.length;
                 const width = el.length;
                 return maxWidth > width ? maxWidth : width;
@@ -176,22 +176,15 @@ class Level {
     }
 
     // Создаем Метод actorAt()
-    actorAt(actor) { // todo непонял описнаие
+    actorAt(actor) {
 
         if (!(actor instanceof Actor)) {
-            //throw new Error('В actorAt() передан объект другого типа');
+            throw new Error('В actorAt() передан объект другого типа');
+        } else {
+            return this.actors.find((el) => {
+                return el.isIntersect(actor);
+            })
         }
-
-        // this.actors.map(function (el) {
-        //     if (actor.pos.x === el.pos.x || actor.pos.y === el.pos.y) {
-        //         return el;
-        //     } else {
-        //         return undefined;
-        //     }
-        // })
-        return actor;// временно
-
-
     }
 
     // Создаем Метод obstacleAt()
