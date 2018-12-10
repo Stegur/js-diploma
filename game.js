@@ -160,7 +160,7 @@ class Level {
                 const maxWidth = max.length;
                 const width = el.length;
                 return maxWidth > width ? maxWidth : width;
-            })
+            }, [['']])
         }
         this.status = null;
         this.finishDelay = 1;
@@ -208,9 +208,7 @@ class Level {
 
     // Создаем Метод noMoreActors()
     noMoreActors(type) {
-        return this.actors.forEach(function (actor) {
-            return (actor.type !== type);
-        })
+        return this.actors.some(actor => actor.type !== type)
     }
 
     // Создаем Метод playerTouched()
