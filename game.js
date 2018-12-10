@@ -200,12 +200,10 @@ class Level {
 
     // Создаем Метод removeActor()
     removeActor(actor) {
-        this.actors.forEach(function (el) {
-            if (el === actor) {
-                let index = this.actors.indexOf(el);
-                this.actors.splice(index, 1);
-            }
-        })
+        let index = this.actors.indexOf(actor);
+        if (index >= 0) {
+            this.actors.splice(index, 1);
+        }
     }
 
     // Создаем Метод noMoreActors()
