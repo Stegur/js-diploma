@@ -189,7 +189,12 @@ class Level {
         if (!(pos instanceof Vector) || !(size instanceof Vector)) {
             throw new Error('В obstacleAt() передан объект другого типа');
         }
-
+        let obj = new Actor(pos, size);
+        if (obj.left < 0 || obj.right > this.width || obj.top < 0) {
+            return 'wall';
+        } else if (obj.bottom > this.height) {
+            return 'lava';
+        }
 
     }
 
