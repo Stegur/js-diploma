@@ -57,42 +57,38 @@ class Actor {
         this.act = function () {
         };
 
-        // Определяем свойство только для чтения left, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
-        Object.defineProperty(this, 'left', {
-            get: function () {
-                return this.pos.x;
-            }
-        });
-
-        // Определяем свойство только для чтения top, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
-        Object.defineProperty(this, 'top', {
-            get: function () {
-                return this.pos.y;
-            }
-        });
-
-        // Определяем свойство только для чтения right, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
-        Object.defineProperty(this, 'right', {
-            get: function () {
-                return this.pos.x + this.size.x;
-            }
-        });
-
-        // Определяем свойство только для чтения bottom, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
-        Object.defineProperty(this, 'bottom', {
-            get: function () {
-                return this.pos.y + this.size.y;
-            }
-        });
-
-        // Определяем свойство type со значением actor, только для чтения
-        Object.defineProperty(this, 'type', {
-            get: function () {
-                return 'actor';
-            }
-        });
 
     }
+
+    // Определяем свойство только для чтения left, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
+
+    get left() {
+        return this.pos.x;
+    };
+
+    // Определяем свойство только для чтения top, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
+
+    get top() {
+        return this.pos.y;
+    };
+
+    // Определяем свойство только для чтения right, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
+
+    get right() {
+        return this.pos.x + this.size.x;
+    };
+
+    // Определяем свойство только для чтения bottom, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
+
+    get bottom() {
+        return this.pos.y + this.size.y;
+    };
+
+    // Определяем свойство type со значением actor, только для чтения
+
+    get type() {
+        return 'actor';
+    };
 
     // Создаем метод isIntersect()
     isIntersect(actor) {
