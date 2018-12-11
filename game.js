@@ -174,13 +174,11 @@ class Level {
     // Создаем Метод actorAt()
     actorAt(actor) {
 
-        /*  if (!(actor instanceof Actor)) {
-              throw new Error('В actorAt() передан объект другого типа');
-          } else {
-              return this.actors.find((el) => {
-                  return el.isIntersect(actor);
-              })
-          }*/
+        if (!(actor instanceof Actor)) {
+            throw new Error('В actorAt() передан объект другого типа');
+        } else {
+            return this.actors.find(el => el.isIntersect(actor))
+        }
     }
 
     // Создаем Метод obstacleAt()
@@ -194,6 +192,21 @@ class Level {
             return 'wall';
         } else if (obj.bottom > this.height) {
             return 'lava';
+        }
+
+        let left = Math.floor(obj.left);
+        let right = Math.ceil(obj.right);
+        let top = Math.floor(obj.top);
+        let bottom = Math.ceil(obj.bottom);
+
+        if (this.grid[left][top]) {
+            return this.grid[left][top];
+        } else if (this.grid[right][top]) {
+            return this.grid[right][top];
+        } else if (this.grid[left][bottom]) {
+            return this.grid[left][bottom];
+        } else if (this.grid[right][bottom]) {
+            return this.grid[right][bottom];
         }
 
     }
