@@ -147,7 +147,7 @@ class Level {
     constructor(field = [], actors = []) {
         this.grid = field;
         this.actors = actors;
-        this.player = actors.find((el) => {
+        this.player = this.actors.find((el) => {
             return el.type === 'player'
         });
 
