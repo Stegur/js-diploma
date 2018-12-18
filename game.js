@@ -306,6 +306,34 @@ class LevelParser {
             return undefined;
         }
     }
+
+    // создаем метод createGrid()
+    createGrid(arr) {
+        if (arr.length === 0) {
+            return [];
+        } else {
+            let plan = [];
+            for (let i = 0; i < arr.length; i++) {
+                plan.push([arr[i]]);
+            }
+            return plan;
+        }
+        // this.obstacleFromSymbol()
+    }
+
+    // создаем метод createActors()
+    createActors(arr){
+        if (arr.length === 0) {
+            return [];
+        }
+        // this.actorFromSymbol()
+    }
+
+    // создаем метод parse()
+    parse(arr) {
+        return new Level(this.createGrid(), this.createActors())
+        
+    }
 }
 
 
