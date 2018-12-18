@@ -289,6 +289,13 @@ class LevelParser {
     constructor(dict){
         this.dict = dict;
     }
+
+    // создаем метод actorFromSymbol()
+    actorFromSymbol(symbol){
+       return this.dict.find(el => {
+           if(el === symbol) return el;
+       });
+    }
 }
 
 
