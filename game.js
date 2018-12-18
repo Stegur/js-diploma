@@ -142,7 +142,7 @@ class Actor {
 // items.forEach(status);
 
 
-// Создаем сласс Level
+// Создаем класс Level
 class Level {
     constructor(field = [], actors = []) {
         this.grid = field;
@@ -241,42 +241,75 @@ class Level {
 }
 
 
-//Пример кода
-const grid = [
 
-    [undefined, undefined],
-    ['wall', 'wall']
+// //Пример кода
+// const grid = [
+//
+//     [undefined, undefined],
+//     ['wall', 'wall']
+// ];
+//
+// function MyCoin(title) {
+//     this.type = 'coin';
+//     this.title = title;
+// }
+//
+// MyCoin.prototype = Object.create(Actor);
+// MyCoin.constructor = MyCoin;
+//
+// const goldCoin = new MyCoin('Золото');
+// const bronzeCoin = new MyCoin('Бронза');
+// const player = new Actor();
+// const fireball = new Actor();
+//
+// const level = new Level(grid, [goldCoin, bronzeCoin, player, fireball]);
+//
+// level.playerTouched('coin', goldCoin);
+// level.playerTouched('coin', bronzeCoin);
+//
+// if (level.noMoreActors('coin')) {
+//     console.log('Все монеты собраны');
+//     console.log(`Статус игры: ${level.status}`);
+// }
+//
+// const obstacle = level.obstacleAt(new Vector(1, 1), player.size);
+// if (obstacle) {
+//     console.log(`На пути препятствие: ${obstacle}`);
+// }
+//
+// const otherActor = level.actorAt(player);
+// if (otherActor === fireball) {
+//     console.log('Пользователь столкнулся с шаровой молнией');
+// }
+
+
+// Создаем класс LevelParser
+
+class LevelParser {
+    constructor(dict){
+        this.dict = dict;
+    }
+}
+
+
+
+// Пример использования
+
+const plan = [
+    ' @ ',
+    'x!x'
 ];
 
-function MyCoin(title) {
-    this.type = 'coin';
-    this.title = title;
-}
+const actorsDict = Object.create(null);
+actorsDict['@'] = Actor;
 
-MyCoin.prototype = Object.create(Actor);
-MyCoin.constructor = MyCoin;
+const parser = new LevelParser(actorsDict);
+const level = parser.parse(plan);
 
-const goldCoin = new MyCoin('Золото');
-const bronzeCoin = new MyCoin('Бронза');
-const player = new Actor();
-const fireball = new Actor();
+level.grid.forEach((line, y) => {
+    line.forEach((cell, x) => console.log(`(${x}:${y}) ${cell}`));
+});
 
-const level = new Level(grid, [goldCoin, bronzeCoin, player, fireball]);
+level.actors.forEach(actor => console.log(`(${actor.pos.x}:${actor.pos.y}) ${actor.type}`));
 
-level.playerTouched('coin', goldCoin);
-level.playerTouched('coin', bronzeCoin);
 
-if (level.noMoreActors('coin')) {
-    console.log('Все монеты собраны');
-    console.log(`Статус игры: ${level.status}`);
-}
-
-const obstacle = level.obstacleAt(new Vector(1, 1), player.size);
-if (obstacle) {
-    console.log(`На пути препятствие: ${obstacle}`);
-}
-
-const otherActor = level.actorAt(player);
-if (otherActor === fireball) {
-    console.log('Пользователь столкнулся с шаровой молнией');
-}
