@@ -241,7 +241,6 @@ class Level {
 }
 
 
-
 // //Пример кода
 // const grid = [
 //
@@ -286,18 +285,28 @@ class Level {
 // Создаем класс LevelParser
 
 class LevelParser {
-    constructor(dict){
+    constructor(dict) {
         this.dict = dict;
     }
 
     // создаем метод actorFromSymbol()
-    actorFromSymbol(symbol){
-       return this.dict.find(el => {
-           if(el === symbol) return el;
-       });
+    actorFromSymbol(symbol) {
+        return this.dict.find(el => {
+            if (el === symbol) return el;
+        });
+    }
+
+    // создаем метод actorFromSymbol()
+    obstacleFromSymbol(symbol) {
+        if (symbol === 'x') {
+            return 'wall';
+        } else if (symbol === '!') {
+            return 'lava';
+        } else {
+            return undefined;
+        }
     }
 }
-
 
 
 // Пример использования
