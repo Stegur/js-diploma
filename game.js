@@ -226,17 +226,18 @@ class Level {
 
     // Создаем Метод playerTouched()
     playerTouched(type, obj = {}) {
-        if (type === 'lava' || type === 'fireball') {
-            this.status = 'lost';
-        } else if (type === 'coin' && obj.title === 'coin') {
-            this.removeActor(obj);
-            if (this.noMoreActors(type)) {
-                return 'won';
+        if (this.status !== null) {
+            if (type === 'lava' || type === 'fireball') {
+                this.status = 'lost';
+            } else if (type === 'coin' && obj.title === 'coin') {
+                this.removeActor(obj);
+                if (this.noMoreActors(type)) {
+                    return 'won';
+                }
             }
+
         }
-
     }
-
 }
 
 
