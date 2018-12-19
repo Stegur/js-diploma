@@ -365,10 +365,33 @@ class Fireball extends Actor {
         this.position = position;
         this.speed = speed;
     }
+
     get type() {
         return 'fireball';
     };
+
+    // создание метода getNextPosition()
+    getNextPosition(time = 1) {
+        return new Vector(this.position.x + (this.speed.x * time), this.position.y + (this.speed.y * time))
+    } // одно из самых понятных для меня описаний
+
+    // создание метода handleObstacle()
+    handleObstacle() {
+        this.speed.x -= this.speed.x * 2;
+        this.speed.y -= this.speed.y * 2;
+    }
+
+    // создание метода act()
+    act(time, plan) {
+        let nextPosition = this.getNextPosition(time);
+        if (!plan.obstacleAt(nextPosition, this.size)) { // запутался в методах, какой отрабатывает столкновение?
+            this.position = nextPosition;
+        } else {
+            this.handleObstacle();
+        }
+    }
 }
+
 
 // Пример использования
 const time = 5;
