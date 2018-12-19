@@ -322,7 +322,7 @@ class LevelParser {
     }
 
     // создаем метод createActors()
-    createActors(arr){
+    createActors(arr) {
         if (arr.length === 0) {
             return [];
         }
@@ -332,28 +332,53 @@ class LevelParser {
     // создаем метод parse()
     parse(arr) {
         return new Level(this.createGrid(), this.createActors())
-        
+
     }
 }
 
 
 // Пример использования
 
-const plan = [
-    ' @ ',
-    'x!x'
-];
+// const plan = [
+//     ' @ ',
+//     'x!x'
+// ];
+//
+// const actorsDict = Object.create(null);
+// actorsDict['@'] = Actor;
+//
+// const parser = new LevelParser(actorsDict);
+// const level = parser.parse(plan);
+//
+// level.grid.forEach((line, y) => {
+//     line.forEach((cell, x) => console.log(`(${x}:${y}) ${cell}`));
+// });
+//
+// level.actors.forEach(actor => console.log(`(${actor.pos.x}:${actor.pos.y}) ${actor.type}`));
 
-const actorsDict = Object.create(null);
-actorsDict['@'] = Actor;
 
-const parser = new LevelParser(actorsDict);
-const level = parser.parse(plan);
+// Создаем класс Fireball
 
-level.grid.forEach((line, y) => {
-    line.forEach((cell, x) => console.log(`(${x}:${y}) ${cell}`));
-});
+class Fireball extends Actor {
+    constructor(position = new Vector(0, 0), speed = new Vector(0, 0)) {
+        super(position, speed);
+        this.position = position;
+        this.speed = speed;
+    }
+    get type() {
+        return 'fireball';
+    };
+}
 
-level.actors.forEach(actor => console.log(`(${actor.pos.x}:${actor.pos.y}) ${actor.type}`));
+// Пример использования
+const time = 5;
+const speed = new Vector(1, 0);
+const position = new Vector(5, 5);
 
+const ball = new Fireball(position, speed);
 
+const nextPosition = ball.getNextPosition(time);
+console.log(`Новая позиция: ${nextPosition.x}: ${nextPosition.y}`);
+
+ball.handleObstacle();
+console.log(`Текущая скорость: ${ball.speed.x}: ${ball.speed.y}`);
