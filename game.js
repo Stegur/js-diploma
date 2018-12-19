@@ -394,14 +394,36 @@ class Fireball extends Actor {
 
 
 // Пример использования
-const time = 5;
-const speed = new Vector(1, 0);
-const position = new Vector(5, 5);
+// const time = 5;
+// const speed = new Vector(1, 0);
+// const position = new Vector(5, 5);
+//
+// const ball = new Fireball(position, speed);
+//
+// const nextPosition = ball.getNextPosition(time);
+// console.log(`Новая позиция: ${nextPosition.x}: ${nextPosition.y}`);
+//
+// ball.handleObstacle();
+// console.log(`Текущая скорость: ${ball.speed.x}: ${ball.speed.y}`);
 
-const ball = new Fireball(position, speed);
 
-const nextPosition = ball.getNextPosition(time);
-console.log(`Новая позиция: ${nextPosition.x}: ${nextPosition.y}`);
+// создание класса HorizontalFireball
+class HorizontalFireball {
+    constructor(position) { // при столкновении с препятствием движется в обратную сторону.
+        return new Fireball(new Vector(position), new Vector(2, 0)); // как передать его размеры, если у Fireball только 2 агрумента?
+    }
+}
 
-ball.handleObstacle();
-console.log(`Текущая скорость: ${ball.speed.x}: ${ball.speed.y}`);
+// создание класса VerticalFireball
+class VerticalFireball {
+    constructor(position) { // при столкновении с препятствием движется в обратную сторону.
+        return new Fireball(new Vector(position), new Vector(0, 2)); // как передать его размеры, если у Fireball только 2 агрумента?
+    }
+}
+
+// создание класса FireRain
+class FireRain {
+    constructor(position) { // при столкновении с препятствием начинает движение в том же направлении из исходного положения, которое задано при создании.
+        return new Fireball(new Vector(position), new Vector(0, 3)); // как передать его размеры, если у Fireball только 2 агрумента?
+    }
+}
