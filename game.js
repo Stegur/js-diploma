@@ -410,20 +410,80 @@ class Fireball extends Actor {
 // создание класса HorizontalFireball
 class HorizontalFireball {
     constructor(position) { // при столкновении с препятствием движется в обратную сторону.
-        return new Fireball(new Vector(position), new Vector(2, 0)); // как передать его размеры, если у Fireball только 2 агрумента?
+        return new Fireball(new Vector(position.x, position.y), new Vector(2, 0)); // как передать его размеры, если у Fireball только 2 агрумента?
     }
 }
 
 // создание класса VerticalFireball
 class VerticalFireball {
     constructor(position) { // при столкновении с препятствием движется в обратную сторону.
-        return new Fireball(new Vector(position), new Vector(0, 2)); // как передать его размеры, если у Fireball только 2 агрумента?
+        return new Fireball(new Vector(position.x, position.y), new Vector(0, 2)); // как передать его размеры, если у Fireball только 2 агрумента?
     }
 }
 
 // создание класса FireRain
 class FireRain {
     constructor(position) { // при столкновении с препятствием начинает движение в том же направлении из исходного положения, которое задано при создании.
-        return new Fireball(new Vector(position), new Vector(0, 3)); // как передать его размеры, если у Fireball только 2 агрумента?
+        return new Fireball(new Vector(position.x, position.y), new Vector(0, 3)); // как передать его размеры, если у Fireball только 2 агрумента?
+    }
+}
+
+// создание класса Coin
+class Coin extends Actor {
+    constructor(position) {
+        super();
+        this.size.x = 0.6;
+        this.size.y = 0.6;
+        this.pos.x = position.x + 0.2;
+        this.pos.y = position.y + 0.1;
+        this.springSpeed = 8;
+        this.springDist = 0.07; // или свойства делаем через get? Хотя тесты не работают ни так ни так((
+        this.spring = Math.random() * Math.PI;
+
+    }
+
+    get type() {
+        return 'coin';
+    }
+    get springDist() {
+        return 0.07;
+    }
+
+    // создаем метод spring()
+    updateSpring(time = 1) {
+        this.spring += this.springSpeed * time;
+    }
+
+    // создаем метод getSpringVector()
+    getSpringVector(){
+        return new Vector(0, Math.sin(this.spring) * this.springDist);
+    }
+
+    // создаем метод getNextPosition()
+    getNextPosition(time = 1){
+        this.updateSpring(time); // как использовать time?
+        return new Vector(this.pos.x + this.getSpringVector().x, this.pos.y + this.getSpringVector().y);
+    }
+
+    // моздаем метод act()
+    act(time) {
+        this.pos = this.getNextPosition(time);
+    }
+}
+
+// Создаем класс Player
+class Player extends Actor {
+    constructor(position){
+        super();
+        this.pos.x = position.x - 0;
+        this.pos.y = position.y - 0.5;
+        this.size.x = 0.8;
+        this.size.y = 1.5;
+        this.speed.x = 0;
+        this.speed.y = 0;
+    }
+
+    get type(){
+        return 'player';
     }
 }
