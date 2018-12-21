@@ -221,17 +221,17 @@ class Level {
 
     // Создаем Метод noMoreActors()
     noMoreActors(type) {
-        return this.actors.some(actor => actor.type !== type)
+        return this.actors.some(actor => actor.type == type)
     }
 
     // Создаем Метод playerTouched()
     playerTouched(type, obj = {}) {
-        if (this.status !== null) {
+        if (this.status === null) {
             if (type === 'lava' || type === 'fireball') {
                 this.status = 'lost';
             } else if (type === 'coin' && obj.title === 'coin') {
                 this.removeActor(obj);
-                if (this.noMoreActors(type)) {
+                if (this.noMoreActors('coin')) {
                     return 'won';
                 }
             }
@@ -291,9 +291,7 @@ class LevelParser {
 
     // создаем метод actorFromSymbol()
     actorFromSymbol(symbol) {
-        return this.dict.find(el => {
-            if (el === symbol) return el;
-        });
+        return this.dict[symbol];
     }
 
     // создаем метод actorFromSymbol()
@@ -445,6 +443,7 @@ class Coin extends Actor {
     get type() {
         return 'coin';
     }
+
     get springDist() {
         return 0.07;
     }
@@ -455,12 +454,12 @@ class Coin extends Actor {
     }
 
     // создаем метод getSpringVector()
-    getSpringVector(){
+    getSpringVector() {
         return new Vector(0, Math.sin(this.spring) * this.springDist);
     }
 
     // создаем метод getNextPosition()
-    getNextPosition(time = 1){
+    getNextPosition(time = 1) {
         this.updateSpring(time); // как использовать time?
         return new Vector(this.pos.x + this.getSpringVector().x, this.pos.y + this.getSpringVector().y);
     }
@@ -473,7 +472,7 @@ class Coin extends Actor {
 
 // Создаем класс Player
 class Player extends Actor {
-    constructor(position){
+    constructor(position) {
         super();
         this.pos.x = position.x - 0;
         this.pos.y = position.y - 0.5;
@@ -483,7 +482,7 @@ class Player extends Actor {
         this.speed.y = 0;
     }
 
-    get type(){
+    get type() {
         return 'player';
     }
 }
