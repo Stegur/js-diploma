@@ -199,14 +199,12 @@ class Level {
         let top = Math.floor(obj.top);
         let bottom = Math.ceil(obj.bottom);
 
-        if (this.grid[left][top]) {
-            return this.grid[left][top];
-        } else if (this.grid[right][top]) {
-            return this.grid[right][top];
-        } else if (this.grid[left][bottom]) {
-            return this.grid[left][bottom];
-        } else if (this.grid[right][bottom]) {
-            return this.grid[right][bottom];
+        for (let y = top; y < bottom; y++) {
+            for (let x = left; x < right; x++) {
+                if (this.grid[y][x]) {
+                    return this.grid[y][x];
+                }
+            }
         }
 
     }
@@ -221,7 +219,7 @@ class Level {
 
     // Создаем Метод noMoreActors()
     noMoreActors(type) {
-        return this.actors.some(actor => actor.type == type)
+        return !this.actors.some(actor => actor.type == type)
     }
 
     // Создаем Метод playerTouched()
@@ -291,7 +289,11 @@ class LevelParser {
 
     // создаем метод actorFromSymbol()
     actorFromSymbol(symbol) {
-        return this.dict[symbol];
+        if (symbol === undefined) {
+            return undefined;
+        } else {
+            return this.dict[symbol];
+        }
     }
 
     // создаем метод actorFromSymbol()
