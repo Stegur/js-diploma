@@ -227,10 +227,10 @@ class Level {
         if (this.status === null) {
             if (type === 'lava' || type === 'fireball') {
                 this.status = 'lost';
-            } else if (type === 'coin' && obj.title === 'coin') {
+            } else if (type === 'coin' && obj instanceof Actor) {
                 this.removeActor(obj);
                 if (this.noMoreActors('coin')) {
-                    return 'won';
+                    return this.status = 'won';
                 }
             }
 
