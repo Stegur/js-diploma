@@ -309,29 +309,31 @@ class LevelParser {
 
     // создаем метод createGrid()
     createGrid(arr) {
-        if (arr.length === 0) {
-            return [];
-        } else {
-            let plan = [];
-            for (let i = 0; i < arr.length; i++) {
-                plan.push([arr[i]]);
-            }
-            return plan;
-        }
-        // this.obstacleFromSymbol()
+        let levelGrid = arr.map(str => str.split(''));
+        return levelGrid.map(str => str = str.map(el => this.obstacleFromSymbol(el)));
     }
 
     // создаем метод createActors()
     createActors(arr) {
-        if (arr.length === 0) {
-            return [];
+        const actors = [];
+        if (this.dict) {
+            arr.forEach((row, y) => {
+                row.split('').forEach((char, x) => {
+                    if (typeof this.dict[char] === 'function') {
+                        const actor = new this.dict[char](new Vector(x, y));
+                        if (actor instanceof Actor) {
+                            actors.push(actor);
+                        }
+                    }
+                })
+            })
         }
-        // this.actorFromSymbol()
+        return actors;
     }
 
     // создаем метод parse()
     parse(arr) {
-        return new Level(this.createGrid(), this.createActors())
+        return new Level(this.createGrid(arr), this.createActors(arr))
 
     }
 }
@@ -377,15 +379,15 @@ class Fireball extends Actor {
 
     // создание метода handleObstacle()
     handleObstacle() {
-        this.speed.x -= this.speed.x * 2;
-        this.speed.y -= this.speed.y * 2;
+        this.speed.x *= -1;
+        this.speed.y *= -1;
     }
 
     // создание метода act()
     act(time, plan) {
         let nextPosition = this.getNextPosition(time);
         if (!plan.obstacleAt(nextPosition, this.size)) { // запутался в методах, какой отрабатывает столкновение?
-            this.position = nextPosition;
+            this.pos = nextPosition;
         } else {
             this.handleObstacle();
         }
@@ -408,46 +410,44 @@ class Fireball extends Actor {
 
 
 // создание класса HorizontalFireball
-class HorizontalFireball {
-    constructor(position) { // при столкновении с препятствием движется в обратную сторону.
-        return new Fireball(new Vector(position.x, position.y), new Vector(2, 0)); // как передать его размеры, если у Fireball только 2 агрумента?
+class HorizontalFireball extends Fireball {
+    constructor(pos = new Vector(0, 0)) {
+        super(pos, new Vector(2, 0));
     }
 }
 
 // создание класса VerticalFireball
-class VerticalFireball {
-    constructor(position) { // при столкновении с препятствием движется в обратную сторону.
-        return new Fireball(new Vector(position.x, position.y), new Vector(0, 2)); // как передать его размеры, если у Fireball только 2 агрумента?
+class VerticalFireball extends Fireball {
+    constructor(pos = new Vector(0, 0)) {
+        super(pos, new Vector(0, 2));
     }
 }
 
 // создание класса FireRain
-class FireRain {
-    constructor(position) { // при столкновении с препятствием начинает движение в том же направлении из исходного положения, которое задано при создании.
-        return new Fireball(new Vector(position.x, position.y), new Vector(0, 3)); // как передать его размеры, если у Fireball только 2 агрумента?
+class FireRain extends Fireball {
+    constructor(pos = new Vector(0, 0)) {
+        super(pos, new Vector(0, 3));
+        this.start= this.pos;
+    }
+    handleObstacle(){
+        this.pos = this.start
     }
 }
 
 // создание класса Coin
 class Coin extends Actor {
-    constructor(position) {
-        super();
-        this.size.x = 0.6;
-        this.size.y = 0.6;
-        this.pos.x = position.x + 0.2;
-        this.pos.y = position.y + 0.1;
+    constructor(position = new Vector(0, 0)) {
+        super(position);
+        this.pos = this.pos.plus(new Vector(0.2, 0.1));
+        this.size = new Vector(0.6, 0.6);
         this.springSpeed = 8;
-        this.springDist = 0.07; // или свойства делаем через get? Хотя тесты не работают ни так ни так((
-        this.spring = Math.random() * Math.PI;
+        this.springDist = 0.07;
+        this.spring = Math.random() * 2 * Math.PI;
 
     }
 
     get type() {
         return 'coin';
-    }
-
-    get springDist() {
-        return 0.07;
     }
 
     // создаем метод spring()
@@ -462,8 +462,8 @@ class Coin extends Actor {
 
     // создаем метод getNextPosition()
     getNextPosition(time = 1) {
-        this.updateSpring(time); // как использовать time?
-        return new Vector(this.pos.x + this.getSpringVector().x, this.pos.y + this.getSpringVector().y);
+        this.updateSpring(time);
+        return this.pos.plus(this.getSpringVector());
     }
 
     // моздаем метод act()
@@ -474,8 +474,8 @@ class Coin extends Actor {
 
 // Создаем класс Player
 class Player extends Actor {
-    constructor(position) {
-        super();
+    constructor(position = new Vector(0, 0)) {
+        super(position);
         this.pos.x = position.x - 0;
         this.pos.y = position.y - 0.5;
         this.size.x = 0.8;
