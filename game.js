@@ -52,13 +52,11 @@ class Actor {
 
         // определвем свойство speed, в котором размещен Vector
         this.speed = speed;
-
-        // определвем метод act, который ничего не делает
-        this.act = function () {
-        };
-
-
     }
+
+    // определвем метод act, который ничего не делает
+
+    act() {};
 
     // Определяем свойство только для чтения left, в котором установлены границы объекта по осям X и Y с учетом его расположения и размера.
 
@@ -362,10 +360,11 @@ class LevelParser {
 // Создаем класс Fireball
 
 class Fireball extends Actor {
-    constructor(position = new Vector(0, 0), speed = new Vector(0, 0)) {
-        super(position, speed);
+    constructor(position = new Vector(0, 0), speed = new Vector(0, 0), size = new Vector(1, 1)) {
+        super(position, speed, size);
         this.position = position;
         this.speed = speed;
+        this.size = size;
     }
 
     get type() {
@@ -427,9 +426,10 @@ class VerticalFireball extends Fireball {
 class FireRain extends Fireball {
     constructor(pos = new Vector(0, 0)) {
         super(pos, new Vector(0, 3));
-        this.start= this.pos;
+        this.start = this.pos;
     }
-    handleObstacle(){
+
+    handleObstacle() {
         this.pos = this.start
     }
 }
@@ -450,7 +450,7 @@ class Coin extends Actor {
         return 'coin';
     }
 
-    // создаем метод spring()
+    // создаем метод updateSpring()
     updateSpring(time = 1) {
         this.spring += this.springSpeed * time;
     }
@@ -462,8 +462,9 @@ class Coin extends Actor {
 
     // создаем метод getNextPosition()
     getNextPosition(time = 1) {
+        this.nextPos = Object.assign(this.pos);
         this.updateSpring(time);
-        return this.pos.plus(this.getSpringVector());
+        return this.nextPos.plus(this.getSpringVector());
     }
 
     // моздаем метод act()
