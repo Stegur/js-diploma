@@ -360,11 +360,8 @@ class LevelParser {
 // Создаем класс Fireball
 
 class Fireball extends Actor {
-    constructor(position = new Vector(0, 0), speed = new Vector(0, 0), size = new Vector(1, 1)) {
-        super(position, speed, size);
-        this.position = position;
-        this.speed = speed;
-        this.size = size;
+    constructor(coords = new Vector(0, 0), speed = new Vector(0, 0)) {
+        super(coords, new Vector(1, 1), speed);
     }
 
     get type() {
@@ -373,8 +370,8 @@ class Fireball extends Actor {
 
     // создание метода getNextPosition()
     getNextPosition(time = 1) {
-        return new Vector(this.position.x + (this.speed.x * time), this.position.y + (this.speed.y * time))
-    } // одно из самых понятных для меня описаний
+        return this.pos.plus(this.speed.times(time));
+    }
 
     // создание метода handleObstacle()
     handleObstacle() {
@@ -385,7 +382,7 @@ class Fireball extends Actor {
     // создание метода act()
     act(time, plan) {
         let nextPosition = this.getNextPosition(time);
-        if (!plan.obstacleAt(nextPosition, this.size)) { // запутался в методах, какой отрабатывает столкновение?
+        if (!plan.obstacleAt(nextPosition, this.size)) {
             this.pos = nextPosition;
         } else {
             this.handleObstacle();
@@ -410,22 +407,22 @@ class Fireball extends Actor {
 
 // создание класса HorizontalFireball
 class HorizontalFireball extends Fireball {
-    constructor(pos = new Vector(0, 0)) {
-        super(pos, new Vector(2, 0));
+    constructor(pos = new Vector(0, 0), speed = new Vector(2, 0)) {
+        super(pos, speed);
     }
 }
 
 // создание класса VerticalFireball
 class VerticalFireball extends Fireball {
-    constructor(pos = new Vector(0, 0)) {
-        super(pos, new Vector(0, 2));
+    constructor(pos = new Vector(0, 0), speed = new Vector(0, 2)) {
+        super(pos, speed);
     }
 }
 
 // создание класса FireRain
 class FireRain extends Fireball {
-    constructor(pos = new Vector(0, 0)) {
-        super(pos, new Vector(0, 3));
+    constructor(pos = new Vector(0, 0), speed = new Vector(0, 3)) {
+        super(pos, speed);
         this.start = this.pos;
     }
 
@@ -489,3 +486,21 @@ class Player extends Actor {
         return 'player';
     }
 }
+
+
+const schemas = loadLevels();
+
+const actors = {
+    '@': Player,
+    '=': HorizontalFireball,
+    '|': VerticalFireball,
+    'o': Coin,
+    'v': FireRain
+};
+
+const parser = new LevelParser(actors);
+
+schemas.then(result => {
+    runGame(JSON.parse(result), parser, DOMDisplay)
+        .then(() => alert('Успех! Вы выиграли!'));
+});
