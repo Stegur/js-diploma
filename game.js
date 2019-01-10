@@ -439,6 +439,7 @@ class Coin extends Actor {
     constructor(position = new Vector(0, 0)) {
         super(position);
         this.pos = this.pos.plus(new Vector(0.2, 0.1));
+        this.nextPos = Object.assign(this.pos);
         this.size = new Vector(0.6, 0.6);
         this.springSpeed = 8;
         this.springDist = 0.07;
@@ -462,7 +463,6 @@ class Coin extends Actor {
 
     // создаем метод getNextPosition()
     getNextPosition(time = 1) {
-        this.nextPos = Object.assign(this.pos);
         this.updateSpring(time);
         return this.nextPos.plus(this.getSpringVector());
     }
