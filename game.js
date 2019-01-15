@@ -1,6 +1,7 @@
 'use strict';
 
 // Создаем сласс Vector
+
 class Vector {
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -35,9 +36,9 @@ class Vector {
 
 
 // Создаем класс Vector
-class Actor {
-    constructor(position = new Vector(), size = new Vector(1, 1), speed = new Vector()) {
 
+class Actor {
+    constructor(position = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
 
         // исключение если position не является Vector
         if (!(position instanceof Vector && size instanceof Vector && speed instanceof Vector)) {
@@ -99,7 +100,6 @@ class Actor {
             return false;
         }
 
-
         return !((this.bottom <= actor.top) || (this.top >= actor.bottom) ||
             (this.left >= actor.right) || (this.right <= actor.left));
 
@@ -141,10 +141,11 @@ class Actor {
 
 
 // Создаем класс Level
+
 class Level {
     constructor(field = [], actors = []) {
-        this.grid = field;
-        this.actors = actors;
+        this.grid = field.slice();
+        this.actors = actors.slice();
         this.player = this.actors.find((el) => {
             return el.type === 'player'
         });
@@ -192,10 +193,10 @@ class Level {
             return 'lava';
         }
 
-        let left = Math.floor(obj.left);
-        let right = Math.ceil(obj.right);
-        let top = Math.floor(obj.top);
-        let bottom = Math.ceil(obj.bottom);
+        const left = Math.floor(obj.left);
+        const right = Math.ceil(obj.right);
+        const top = Math.floor(obj.top);
+        const bottom = Math.ceil(obj.bottom);
 
         for (let y = top; y < bottom; y++) {
             for (let x = left; x < right; x++) {
@@ -209,7 +210,7 @@ class Level {
 
     // Создаем Метод removeActor()
     removeActor(actor) {
-        let index = this.actors.indexOf(actor);
+        const index = this.actors.indexOf(actor);
         if (index >= 0) {
             this.actors.splice(index, 1);
         }
@@ -375,8 +376,7 @@ class Fireball extends Actor {
 
     // создание метода handleObstacle()
     handleObstacle() {
-        this.speed.x *= -1;
-        this.speed.y *= -1;
+        this.speed = this.speed.times(-1);
     }
 
     // создание метода act()
@@ -406,6 +406,7 @@ class Fireball extends Actor {
 
 
 // создание класса HorizontalFireball
+
 class HorizontalFireball extends Fireball {
     constructor(pos = new Vector(0, 0), speed = new Vector(2, 0)) {
         super(pos, speed);
@@ -413,6 +414,7 @@ class HorizontalFireball extends Fireball {
 }
 
 // создание класса VerticalFireball
+
 class VerticalFireball extends Fireball {
     constructor(pos = new Vector(0, 0), speed = new Vector(0, 2)) {
         super(pos, speed);
@@ -420,6 +422,7 @@ class VerticalFireball extends Fireball {
 }
 
 // создание класса FireRain
+
 class FireRain extends Fireball {
     constructor(pos = new Vector(0, 0), speed = new Vector(0, 3)) {
         super(pos, speed);
@@ -432,6 +435,7 @@ class FireRain extends Fireball {
 }
 
 // создание класса Coin
+
 class Coin extends Actor {
     constructor(position = new Vector(0, 0)) {
         super(position);
@@ -471,6 +475,7 @@ class Coin extends Actor {
 }
 
 // Создаем класс Player
+
 class Player extends Actor {
     constructor(position = new Vector(0, 0)) {
         super(position);
@@ -486,7 +491,6 @@ class Player extends Actor {
         return 'player';
     }
 }
-
 
 const schemas = loadLevels();
 
